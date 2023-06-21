@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mazu Project</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Ajoutez ici votre style personnalisé */
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mazu Project</h1>
+  </header>
+
+  <section>
+    <h2>Charger des fichiers</h2>
+    <input type="file" id="fileInput">
+    <button id="sendButton">Envoyer</button>
+  </section>
+
+  <section>
+    <h2>Réponse de l'API</h2>
+    <table id="predictionTable">
+      <thead>
+        <tr>
+          <th>Tag Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Les prédictions seront ajoutées ici dynamiquement -->
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p id="date"></p>
+  </footer>
+
+<script>
+  var fileInput = document.getElementById("fileInput");
+  var submitButton = document.getElementById("sendButton"); 
+  submitButton.addEventListener("click", function() {
+  var file = fileInput.files[0];
+  if (file) {
+    sendRequest(file);
+  }
+});
+
+  function sendRequest(file) {
+    var url = "https://mazuproject2023cv-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/e3c4ed53-3a0b-4544-b101-2a186aeaa6bd/classify/iterations/Iteration2/image"; // Remplacez par l'URL de votre API
+    var predictionKey = "314f3cd135f2435eac5e5011897c4669"; 
+    var contentType = "application/json";
+
+
+    var options = {
+      method: 'POST',
+      headers: {
+      'Prediction-Key': predictionKey,
+      'Content-Type' : contentType
+      },
+      body: file
+    };
+
+  fetch(url, options)
+    .then(function(response) {
+      if (response.ok) {
+        print(response)
+        return response.json();
+      } else {
+        throw new Error("Erreur lors de la requête : " + response.status);
+      }
+    })
+    .then(function(data) {
+    })
+    .catch(function(error) {
+      console.log("Erreur : " + error.message);
+    });
+}
+
+      // Exemple de réponse de l'API
+      var response = {
+        "id": "e3d5ccd2-8bc2-45ce-acf6-dfcc3a9d494a",
+        "project": "e3c4ed53-3a0b-4544-b101-2a186aeaa6bd",
+        "iteration": "ff3a1949-2c85-490c-ac6e-026521aa4ef1",
+        "created": "2023-06-21T20:04:33.741Z",
+        "predictions": [
+          {
+            "probability": 0.48054054,
+            "tagId": "8c33059f-4194-48b4-8784-b17dee042515",
+            "tagName": "Tomato_Early_blight"
+          },
+          // Ajoutez les autres prédictions ici
+        ]
+      };
+
+      var tableBody = document.getElementById("predictionTable").getElementsByTagName("tbody")[0];
+      tableBody.innerHTML = "";
+
+      response.predictions.forEach(function(prediction) {
+        var row = tableBody.insertRow();
+        var tagNameCell = row.insertCell();
+        tagNameCell.innerHTML = prediction.tagName;
+      });
+    
+
+    // Affiche la date du jour dans le footer
+    var currentDate = new Date().toLocaleDateString("fr-FR");
+    document.getElementById("date").innerHTML = "Date : " + currentDate;
+  </script>
+</body>
+</html>
