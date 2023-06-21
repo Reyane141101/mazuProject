@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mazuproject</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1 class="header-title">Mazuproject</h1>
+  </header>
+
+  <div class="content">
+    <input type="file" id="fileInput" style="display: none;">
+    <button id="openFileButton">Charger un fichier</button>
+    <button id="sendRequestButton" disabled>Initier une requête POST</button>
+
+    <p id="selectedFileName"></p>
+
+    <table id="resultTable"></table>
+  </div>
+
+  <footer>
+    <p id="date"></p>
+    <p>Reyane Adoum</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
